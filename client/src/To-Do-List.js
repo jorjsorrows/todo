@@ -51,37 +51,36 @@ class ToDoList extends Component {
                 if (res.data) {
                     this.setState({
                         items: res.data.map(item => {
-                            let color = "yellow";
-                            let style = {
-                                wordWrap: "break-word",
-                            };
-
-                            if (item.stats) {
-                                color = "green";
-                                style["textDecorationLine"] = 'line-through';
-                            }
-
+                            let color = item.stats ? 'green' : 'yellow';
+                            let style = item.stats ? { textDecorationLine: 'line-through' } : { wordWrap: "break-word" };
+    
                             return (
                                 <Card key={item.id} color={color} fluid className="rough">
                                     <Card.Content>
-                                        <Card.Header textAlign="left">
-                                            <div style={style}>{item.task}</div>
+                                        <Card.Header textAlign="left" style={style}>
+                                            <div>{item.task}</div>
                                         </Card.Header>
                                         <Card.Meta textAlign="right">
                                             <Icon
-                                                name="check status"
-                                                color="blue"
+                                                name="check"
+                                                color="green"
                                                 onClick={() => this.updateTask(item._id)}
                                             />
+                                            <span style={{ paddingRight: 10 }}> Done </span>
+    
+                                            <Icon
+                                                name="undo"
+                                                color="blue"
+                                                onClick={() => this.undoTask(item._id)}
+                                            />
                                             <span style={{ paddingRight: 10 }}> Undo </span>
-
+    
                                             <Icon
                                                 name="delete"
                                                 color="red"
                                                 onClick={() => this.deleteTask(item._id)}
                                             />
-                                            <span style={{ paddingRight: 10 }}> Undo </span>
-
+                                            <span style={{ paddingRight: 10 }}> Delete </span>
                                         </Card.Meta>
                                     </Card.Content>
                                 </Card>
@@ -99,17 +98,21 @@ class ToDoList extends Component {
                 console.error("Error fetching data:", error);
             });
     }
+    
 
     updateTask = (id) => {
-        axios.put(endpoint + "/api/task/" + id, {}, {
+        axios.put(endpoint + "/api/task/" + id, { stats: true }, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
         }).then((res) => {
             console.log(res);
-            this.getTask();
+            this.getTask(); // Refresh the task list after updating
+        }).catch(error => {
+            console.error("Error updating task:", error);
         });
     }
+    
 
     undoTask = (id) => {
         axios.put(endpoint + "/api/undoTask/" + id, {}, {

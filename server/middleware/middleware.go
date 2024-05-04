@@ -37,7 +37,7 @@ func loadTheEnv() {
 func createDBInstance() {
 	connectionString := os.Getenv("DB_URL")
 	dbName := os.Getenv("DB_NAME")
-	collName := os.Getenv("DB_COLLECTION")
+	collName := os.Getenv("DB_COLLECTION_NAME")
 
 	clientOptions := options.Client().ApplyURI(connectionString)
 
@@ -59,7 +59,7 @@ func createDBInstance() {
 // GetAllTasks handles the retrieval of all tasks from the database.
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	payload := getAllTasks()
 	json.NewEncoder(w).Encode(payload)
 }
@@ -67,7 +67,7 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 // CreateTask handles the creation of a new task in the database.
 func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -85,7 +85,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 // TaskComplete marks a task as complete in the database.
 func TaskComplete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -98,7 +98,7 @@ func TaskComplete(w http.ResponseWriter, r *http.Request) {
 // UndoTask reverts a task's status to incomplete in the database.
 func UndoTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	params := mux.Vars(r)
@@ -109,7 +109,7 @@ func UndoTask(w http.ResponseWriter, r *http.Request) {
 // DeleteTask handles the deletion of a task from the database.
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	params := mux.Vars(r)
@@ -119,7 +119,7 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 // DeleteAllTasks handles the deletion of all tasks from the database.
 func DeleteAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	count := deleteAllTasks()
 	json.NewEncoder(w).Encode(count)
 }
